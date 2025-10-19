@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		856AB18B2EA1939900458659 /* FSCalendar in Frameworks */ = {isa = PBXBuildFile; productRef = 856AB18A2EA1939900458659 /* FSCalendar */; };
+		856AB1982EA457FE00458659 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = 856AB1972EA457FE00458659 /* FirebaseAuth */; };
+		856AB19A2EA457FE00458659 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 856AB1992EA457FE00458659 /* FirebaseFirestore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -41,6 +43,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				856AB18B2EA1939900458659 /* FSCalendar in Frameworks */,
+				856AB1982EA457FE00458659 /* FirebaseAuth in Frameworks */,
+				856AB19A2EA457FE00458659 /* FirebaseFirestore in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -84,6 +88,8 @@
 			name = AtomicRoutines;
 			packageProductDependencies = (
 				856AB18A2EA1939900458659 /* FSCalendar */,
+				856AB1972EA457FE00458659 /* FirebaseAuth */,
+				856AB1992EA457FE00458659 /* FirebaseFirestore */,
 			);
 			productName = AtomicRoutines;
 			productReference = 856AB0EF2EA0173900458659 /* AtomicRoutines.app */;
@@ -115,6 +121,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				856AB1892EA1939900458659 /* XCRemoteSwiftPackageReference "FSCalendar" */,
+				856AB1962EA457FE00458659 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 856AB0F02EA0173900458659 /* Products */;
@@ -352,6 +359,14 @@
 				minimumVersion = 2.8.4;
 			};
 		};
+		856AB1962EA457FE00458659 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.4.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -359,6 +374,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 856AB1892EA1939900458659 /* XCRemoteSwiftPackageReference "FSCalendar" */;
 			productName = FSCalendar;
+		};
+		856AB1972EA457FE00458659 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 856AB1962EA457FE00458659 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		856AB1992EA457FE00458659 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 856AB1962EA457FE00458659 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

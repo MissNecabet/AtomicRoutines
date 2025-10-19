@@ -9,6 +9,7 @@ import FSCalendar
 
 class CalendarView: UIView {
 
+    var didSelectDate: ((Date) -> Void)?
     private let calendar = FSCalendar()
     //sechilen  aya ve ile aid date fscalendarin title da  gorunur
     private var currentDate = Date()
@@ -194,6 +195,8 @@ extension CalendarView:FSCalendarDelegate, FSCalendarDataSource, FSCalendarDeleg
         let formatter = DateFormatter()
         formatter.dateStyle = .long
         print("Selected date: \(formatter.string(from: date))")
+        // secilmis date calendar controller e oturur ,orda yoxlanacaq ki hemin date ucun data varsa schedule view gorunecek. eks halda no schedule
+        didSelectDate?(date)
     }
 
     func calendar(_ calendar: FSCalendar, appearance: FSCalendarAppearance, fillDefaultColorFor date: Date) -> UIColor? {

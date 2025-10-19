@@ -7,6 +7,7 @@
 
 import UIKit
 import UIKit
+import FirebaseAuth
 //import FirebaseAuth
 //import Firebase
 
@@ -148,42 +149,40 @@ class LoginViewController: UIViewController {
         
       
     @objc func signInTapped() {
-            guard let email = SIEmailTextField.text, !email.isEmpty,
-                  let password = SIPasswordTextField.text, !password.isEmpty else {
-                print("Email və ya password boşdur")
-                showAlert(title: "ERROR", message: "you can't pass the gaps empty")
+        guard let email = SIEmailTextField.text, !email.isEmpty,
+              let password = SIPasswordTextField.text, !password.isEmpty else {
+            print("Email və ya password boşdur")
+            showAlert(title: "ERROR", message: "you can't pass the gaps empty")
+            return
+        }
+      
+        
+        Auth.auth().signIn(withEmail: email, password: password) {[self] authResult, error in
+            
+    
+            if let e = error as NSError?  {
+                print(e)
+                switch AuthErrorCode(rawValue: e.code) {
+                case .userNotFound:
+                    self.showAlert(title: "ERROR", message: "User did not found")
+                    
+                default:
+                    self.showAlert(title: "ERROR", message: e.localizedDescription)
+                }
                 return
-            }
-        let nextVC = TabBar()
-          self.navigationController?.pushViewController(nextVC, animated: true)
-
-            
-            //
-            //            Auth.auth().signIn(withEmail: email, password: password) { authResult, error in
-            //
-            //              // ...
-            //                if let e = error as NSError?  {
-            //                    print(e)
-            //                    switch AuthErrorCode(rawValue: e.code) {
-            //                    case .userNotFound:
-            //                        self.showAlert(title: "ERROR", message: "User did not found")
-            //
-            //                          default:
-            //                        self.showAlert(title: "ERROR", message: e.localizedDescription)
-            //                          }
-            //                          return
-            //                }else{
-            //
-            //                    print("sign ip uqurla basa catdi")
-            //                }
-            //                self.goToMain()
-            //            }
-            //            }
-            
-            
-            
+            }else{
+                let homeVC = HomeViewController()
+                navigationController?.pushViewController(homeVC, animated: true)
            
+                print("sign in uqurla basa catdi")
+            }
             
         }
+        
+        
+        
+        
+        
+    }
         
     }

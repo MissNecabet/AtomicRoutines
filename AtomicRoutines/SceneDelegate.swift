@@ -6,21 +6,36 @@
 //
 
 import UIKit
+import FirebaseCore
+import FirebaseAuth
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-    func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        guard let windowScene = (scene as? UIWindowScene) else { return }
-
-        let window = UIWindow(windowScene: windowScene)
-        let startVC = TabBar()
-        let nav = UINavigationController(rootViewController: startVC) 
-        window.rootViewController = nav
-        self.window = window
-        window.makeKeyAndVisible()
-    }
+    func scene(_ scene: UIScene,
+                   willConnectTo session: UISceneSession,
+                   options connectionOptions: UIScene.ConnectionOptions) {
+         
+            
+            guard let windowScene = (scene as? UIWindowScene) else { return }
+            window = UIWindow(windowScene: windowScene)
+            
+            // 🔹 User login olub-olmadığını yoxla
+            if Auth.auth().currentUser != nil {
+                // Əgər login olubsa → Home ekranına keç
+                let homeVC = HomeViewController()
+                let navController = UINavigationController(rootViewController: homeVC)
+                window?.rootViewController = navController
+            } else {
+                // Əgər login olmayıbsa → Start ekranına keç
+                let startVC = StartViewController()
+                let navController = UINavigationController(rootViewController: startVC)
+                window?.rootViewController = navController
+            }
+            
+            window?.makeKeyAndVisible()
+        }
 
 
 

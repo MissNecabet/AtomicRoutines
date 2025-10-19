@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class NavigationBarView: UIView {
     private let checkListImage = UIImageView()
@@ -30,6 +31,10 @@ class NavigationBarView: UIView {
         signoutLabel.font = UIFont(name: "Poppins-SemiBold", size: 20)
         signoutLabel.textColor = .white
         signoutLabel.translatesAutoresizingMaskIntoConstraints = false
+        signoutLabel.isUserInteractionEnabled = true
+        
+        let addGesture = UITapGestureRecognizer(target: self, action: #selector(signOut))
+        signoutLabel.addGestureRecognizer(addGesture)
          
         addSubview(checkListImage)
         addSubview(signoutLabel)
@@ -48,6 +53,26 @@ class NavigationBarView: UIView {
             heightAnchor.constraint(equalToConstant: 103)
         ])
     }
-    
+    @objc private func signOut() {
+        let firebaseAuth = Auth.auth()
+        do {
+            try firebaseAuth.signOut()
+            
+            
+            let startVC = StartViewController()
+            let navController = UINavigationController(rootViewController: startVC)
+            
+            if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let delegate = scene.delegate as? SceneDelegate,
+               let window = delegate.window {
+                window.rootViewController = navController
+                window.makeKeyAndVisible()
+                print("sign out")
+            }
+        } catch let signOutError as NSError {
+            print("Error signing out: %@", signOutError)
+        }
+    }
+
 
 }

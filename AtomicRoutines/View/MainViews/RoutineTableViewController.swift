@@ -9,16 +9,22 @@ import UIKit
 
 class RoutineTableViewController: UIViewController {
 
-    // MARK: - Properties
+
     private let tableView = UITableView()
     private let addButton = UIButton()
     private var items:[String] = []
     private var routineRowArray: [RoutineRow] = []
 
-    // MARK: - Lifecycle
+
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "cellcolor")
+        let today = Date()
+            RoutineManager.shared.loadRoutine(for: today) { [weak self] tasks in
+                guard let self = self else { return }
+                self.routineRowArray = tasks
+                self.tableView.reloadData()
+            }
         setupAddButton()
         setupTableView()
     }
@@ -64,6 +70,7 @@ class RoutineTableViewController: UIViewController {
         addUpdateRoutineRow(title:nil, alertInfo: "add new routine", action: "add") {[weak self] text in
             let newRoutine = RoutineRow(isDone: false, title: text)
              self?.routineRowArray.append(newRoutine)
+            RoutineManager.shared.updateTodayRoutine(tasks: self!.routineRowArray )
             self?.tableView.reloadData()
         }
     }
@@ -99,7 +106,13 @@ extension RoutineTableViewController: UITableViewDelegate, UITableViewDataSource
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CustomCell.identifier, for: indexPath) as? CustomCell else {
             return UITableViewCell()
         }
-        cell.configure(with: routineRowArray[indexPath.row])
+        let task = routineRowArray[indexPath.row]
+        cell.configure(with: task)
+        cell.isMarked = task.isDone
+        
+            self.tableView.reloadRows(at: [indexPath], with: .automatic)
+            RoutineManager.shared.updateTodayRoutine(tasks: self.routineRowArray)
+     
         return cell
     }
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -108,6 +121,7 @@ extension RoutineTableViewController: UITableViewDelegate, UITableViewDataSource
 
             self?.routineRowArray[indexPath.row].title = text
             self?.tableView.reloadData()
+            RoutineManager.shared.updateTodayRoutine(tasks: self!.routineRowArray)
         }
     }
     

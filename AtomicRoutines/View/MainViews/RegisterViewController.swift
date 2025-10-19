@@ -7,6 +7,7 @@
 
 
 import UIKit
+import FirebaseAuth
 //import FirebaseAuth
 //import Firebase
 
@@ -21,7 +22,8 @@ class RegisterViewController: UIViewController {
     private let SUButton = UIButton()
     private let SUThirdLabel = UILabel()
     private let SUContinueWidthLabel = UILabel()
-   
+    
+  
     override func viewDidLoad() {
             super.viewDidLoad()
             view.backgroundColor = .systemBackground
@@ -139,29 +141,28 @@ class RegisterViewController: UIViewController {
                 showAlert(title: "ERROR", message: "Your password is not same")
                 return
             }
+            Auth.auth().createUser(withEmail: email, password: password) { [self] authResult, error in
+                if let e = error as NSError?{
+                    switch AuthErrorCode(rawValue: e.code) {
+                        case .invalidEmail:
+                            self.showAlert(title: "ERROR", message: "Email format is not correct")
+                        case .emailAlreadyInUse:
+                            self.showAlert(title: "ERROR", message: "email is invalid")
+                        case .weakPassword:
+                            self.showAlert(title: "ERROR", message: "password is so weak")
+                        default:
+                            self.showAlert(title: "ERROR", message: e.localizedDescription)
+                        }
+                        return
+                }else{
+                    let homeVC = HomeViewController()
+                    navigationController?.pushViewController(homeVC, animated: true)
+               
+                    print("sign in uqurla basa catdi")
+                }
+                
+            }
            
-//            Auth.auth().createUser(withEmail: email, password: password) { [self] authResult, error in
-//                if let e = error as NSError?  {
-//                    print(e)
-//                    switch AuthErrorCode(rawValue: e.code) {
-//                          case .invalidEmail:
-//                              self.showAlert(title: "ERROR", message: "Email format is not correct")
-//                          case .emailAlreadyInUse:
-//                              self.showAlert(title: "ERROR", message: "email is invalid")
-//                          case .weakPassword:
-//                              self.showAlert(title: "ERROR", message: "password is so weak")
-//                          default:
-//                              self.showAlert(title: "ERROR", message: e.localizedDescription)
-//                          }
-//                          return
-//                }else{
-//                
-//                    print("sign up uqurla basa catdi")
-//                }
-//                self.goToMain()
-//            }
-            print("Email: \(email)")
-            print("Password: \(password)")
         }
      
     }

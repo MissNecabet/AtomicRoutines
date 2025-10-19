@@ -16,6 +16,8 @@ class CustomCell: UITableViewCell {
     let titleLabel = UILabel()
     var isMarked = false
     
+    var toggleAction: (() -> Void)?
+    
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -68,14 +70,23 @@ class CustomCell: UITableViewCell {
     // MARK: - Configure Cell
     func configure( with routine:RoutineRow) {
         titleLabel.text = routine.title
-        let imageName = routine.isDone ? "marked" : "unmarked"
+        let imageName = routine.isDone ? "+" : "unmarked"
            checkCell.image = UIImage(named: imageName)
        
     }
+    func readOnlyConfigure( with routine:RoutineRow) {
+        titleLabel.text = routine.title
+        let imageName = routine.isDone ? "+" : "-"
+           checkCell.image = UIImage(named: imageName)
+       
+    }
+     
     
     @objc func onTap(){
         isMarked.toggle()
         let image = isMarked ? "+" : "unmarked"
         checkCell.image = UIImage(named: image)
+        toggleAction?()
+      
     }
 }

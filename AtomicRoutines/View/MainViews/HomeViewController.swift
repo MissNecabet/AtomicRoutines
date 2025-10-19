@@ -7,7 +7,7 @@
 
 import UIKit
 
-class TabBar: UITabBarController {
+class HomeViewController: UITabBarController {
     let customNav = NavigationBarView()
 
     override func viewDidLoad() {

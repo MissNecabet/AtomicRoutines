@@ -31,13 +31,12 @@ class NoScheduleView: UIView{
         imageView.translatesAutoresizingMaskIntoConstraints = false
         addSubview(imageView)
         NSLayoutConstraint.activate([
-            // Image
+           
             imageView.widthAnchor.constraint(equalToConstant: 54),
             imageView.heightAnchor.constraint(equalToConstant: 54),
             imageView.centerXAnchor.constraint(equalTo: centerXAnchor),
             imageView.topAnchor.constraint(equalTo: topAnchor, constant: 100),
             
-            // Label
             label.topAnchor.constraint(equalTo: imageView.bottomAnchor),
             label.centerXAnchor.constraint(equalTo: centerXAnchor)
         ])
