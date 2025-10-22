@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class HomeViewController: UITabBarController {
     let customNav = NavigationBarView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        customNav.delegate = self
         createTopBar()
         setupBottomTabBarAppearance()
         self.setupTabs()
@@ -53,4 +55,23 @@ class HomeViewController: UITabBarController {
         tabBar.tintColor = .darkblue
         tabBar.unselectedItemTintColor = .white
         }
+}
+
+extension HomeViewController:NavigationBarViewDelegate{
+    func navigationBarDidTapSignOut() {
+           do {
+               try Auth.auth().signOut()
+               print("Sign out success")
+               let startVC = StartViewController()
+               let navController = UINavigationController(rootViewController: startVC)
+               if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                  let sceneDelegate = windowScene.delegate as? SceneDelegate,
+                  let window = sceneDelegate.window {
+                   window.rootViewController = navController
+                   window.makeKeyAndVisible()
+               }
+           } catch let error {
+               print("Error signing out: \(error.localizedDescription)")
+           }
+       }
 }

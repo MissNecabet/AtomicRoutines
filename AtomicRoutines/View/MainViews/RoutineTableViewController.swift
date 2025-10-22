@@ -14,8 +14,7 @@ class RoutineTableViewController: UIViewController {
     private let addButton = UIButton()
     private var items:[String] = []
     private var routineRowArray: [RoutineRow] = []
-
-
+ 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(named: "cellcolor")
@@ -68,9 +67,13 @@ class RoutineTableViewController: UIViewController {
 
     @objc private func addButtonTapped() {
         addUpdateRoutineRow(title:nil, alertInfo: "add new routine", action: "add") {[weak self] text in
+            //fb dan gelen arraye elave edilir
             let newRoutine = RoutineRow(isDone: false, title: text)
              self?.routineRowArray.append(newRoutine)
+            //fb daki data update olur. array silinir guncellemmis array elave edilir.
             RoutineManager.shared.updateTodayRoutine(tasks: self!.routineRowArray )
+            NotificationCenter.default.post(name: .routineUpdated, object: nil, userInfo: ["tasks": self?.routineRowArray as Any])
+
             self?.tableView.reloadData()
         }
     }
@@ -109,9 +112,15 @@ extension RoutineTableViewController: UITableViewDelegate, UITableViewDataSource
         let task = routineRowArray[indexPath.row]
         cell.configure(with: task)
         cell.isMarked = task.isDone
-        
-            self.tableView.reloadRows(at: [indexPath], with: .automatic)
-            RoutineManager.shared.updateTodayRoutine(tasks: self.routineRowArray)
+        cell.toggleAction = { [weak self] in
+                    guard let self = self else { return }
+                    self.routineRowArray[indexPath.row].isDone = cell.isMarked
+                    RoutineManager.shared.updateTodayRoutine(tasks: self.routineRowArray)
+            NotificationCenter.default.post(name: .routineUpdated, object: nil, userInfo: ["tasks": self.routineRowArray])
+
+                }
+          //  self.tableView.reloadRows(at: [indexPath], with: .automatic)
+          
      
         return cell
     }
@@ -129,5 +138,20 @@ extension RoutineTableViewController: UITableViewDelegate, UITableViewDataSource
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 50
     }
+    // Swipe to delete
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle,
+                   forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete {
+            routineRowArray.remove(at: indexPath.row)
+            RoutineManager.shared.updateTodayRoutine(tasks: routineRowArray)
+            tableView.deleteRows(at: [indexPath], with: .automatic)
+            NotificationCenter.default.post(name: .routineUpdated, object: nil, userInfo: ["tasks": routineRowArray])
+        }
+    }
+
+
     
+}
+extension Notification.Name {
+    static let routineUpdated = Notification.Name("routineUpdated")
 }

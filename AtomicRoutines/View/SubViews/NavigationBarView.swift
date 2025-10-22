@@ -8,12 +8,19 @@
 import UIKit
 import FirebaseAuth
 
+protocol NavigationBarViewDelegate: AnyObject {
+    func navigationBarDidTapSignOut()
+}
+
+
 class NavigationBarView: UIView {
     private let checkListImage = UIImageView()
     private let signoutLabel = UILabel()
+    weak var delegate: NavigationBarViewDelegate?
 
         override init(frame: CGRect) {
             super.init(frame: frame)
+            
             setupUI()
         }
 
@@ -33,8 +40,8 @@ class NavigationBarView: UIView {
         signoutLabel.translatesAutoresizingMaskIntoConstraints = false
         signoutLabel.isUserInteractionEnabled = true
         
-        let addGesture = UITapGestureRecognizer(target: self, action: #selector(signOut))
-        signoutLabel.addGestureRecognizer(addGesture)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapSignOut))
+        signoutLabel.addGestureRecognizer(tapGesture)
          
         addSubview(checkListImage)
         addSubview(signoutLabel)
@@ -57,22 +64,26 @@ class NavigationBarView: UIView {
         let firebaseAuth = Auth.auth()
         do {
             try firebaseAuth.signOut()
-            
+            print("sign out success")
             
             let startVC = StartViewController()
             let navController = UINavigationController(rootViewController: startVC)
             
-            if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let delegate = scene.delegate as? SceneDelegate,
-               let window = delegate.window {
-                window.rootViewController = navController
-                window.makeKeyAndVisible()
-                print("sign out")
+            DispatchQueue.main.async {
+                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                   let sceneDelegate = windowScene.delegate as? SceneDelegate,
+                   let window = sceneDelegate.window {
+                    window.rootViewController = navController
+                    window.makeKeyAndVisible()
+                }
             }
         } catch let signOutError as NSError {
             print("Error signing out: %@", signOutError)
         }
     }
 
+    @objc private func didTapSignOut() {
+          delegate?.navigationBarDidTapSignOut()
+      }
 
 }

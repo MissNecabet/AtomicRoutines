@@ -8,18 +8,19 @@
 import UIKit
 import UIKit
 
-// MARK: - Model
 
-
-// MARK: - Custom TableView UIView
 class ScheduleView: UIView {
-    
+    let routineVC = RoutineTableViewController()
+ 
     private var routineRawArray: [RoutineRow] = []
     private let tableView = UITableView()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-      
+    //xeber gonderir ki handleroutineupdate ise dussun
+        NotificationCenter.default.addObserver(self, selector: #selector(handleRoutineUpdate(_:)), name: .routineUpdated, object: nil)
+ 
+
         setupTableView()
     }
     
@@ -62,13 +63,18 @@ extension ScheduleView: UITableViewDelegate, UITableViewDataSource{
         }
         let task = routineRawArray[indexPath.row]
         cell.readOnlyConfigure(with: task)
+      
+       
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        routineRawArray[indexPath.row].isDone.toggle()
-        tableView.reloadRows(at: [indexPath], with: .automatic)
-        
-       
+
+    @objc private func handleRoutineUpdate(_ notification: Notification) {
+        guard let tasks = notification.userInfo?["tasks"] as? [RoutineRow] else { return }
+        self.routineRawArray = tasks
+        tableView.reloadData()
+        print("ScheduleView updated:", tasks) 
     }
+
+   
 }
+

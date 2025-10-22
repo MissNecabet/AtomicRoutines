@@ -17,7 +17,7 @@ class CustomCell: UITableViewCell {
     var isMarked = false
     
     var toggleAction: (() -> Void)?
-    
+    var isReadOnly = false
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -68,25 +68,27 @@ class CustomCell: UITableViewCell {
     }
     
     // MARK: - Configure Cell
-    func configure( with routine:RoutineRow) {
+  
+    func configure(with routine: RoutineRow) {
+        isReadOnly = false               // toggle aktiv
         titleLabel.text = routine.title
         let imageName = routine.isDone ? "+" : "unmarked"
-           checkCell.image = UIImage(named: imageName)
-       
+        checkCell.image = UIImage(named: imageName)
     }
-    func readOnlyConfigure( with routine:RoutineRow) {
+    func readOnlyConfigure(with routine: RoutineRow) {
+        isReadOnly = true                // ✅ read-only aktiv
         titleLabel.text = routine.title
         let imageName = routine.isDone ? "+" : "-"
-           checkCell.image = UIImage(named: imageName)
-       
+        checkCell.image = UIImage(named: imageName)
     }
      
     
-    @objc func onTap(){
+    @objc func onTap() {
+        guard !isReadOnly else { return }  // read-only isə toggle etmə
         isMarked.toggle()
         let image = isMarked ? "+" : "unmarked"
         checkCell.image = UIImage(named: image)
         toggleAction?()
-      
     }
+
 }
