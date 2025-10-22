@@ -60,30 +60,31 @@ class NavigationBarView: UIView {
             heightAnchor.constraint(equalToConstant: 103)
         ])
     }
-    @objc private func signOut() {
-        let firebaseAuth = Auth.auth()
-        do {
-            try firebaseAuth.signOut()
-            print("sign out success")
-            
-            let startVC = StartViewController()
-            let navController = UINavigationController(rootViewController: startVC)
-            
-            DispatchQueue.main.async {
-                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                   let sceneDelegate = windowScene.delegate as? SceneDelegate,
-                   let window = sceneDelegate.window {
-                    window.rootViewController = navController
-                    window.makeKeyAndVisible()
-                }
-            }
-        } catch let signOutError as NSError {
-            print("Error signing out: %@", signOutError)
-        }
-    }
+//    @objc private func signOut() {
+//        let firebaseAuth = Auth.auth()
+//        do {
+//            try firebaseAuth.signOut()
+//            print("sign out success")
+//            
+//            let startVC = StartViewController()
+//            let navController = UINavigationController(rootViewController: startVC)
+//            
+//            DispatchQueue.main.async {
+//                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+//                   let sceneDelegate = windowScene.delegate as? SceneDelegate,
+//                   let window = sceneDelegate.window {
+//                    window.rootViewController = navController
+//                    window.makeKeyAndVisible()
+//                }
+//            }
+//        } catch let signOutError as NSError {
+//            print("Error signing out: %@", signOutError)
+//        }
+//    }
 
     @objc private func didTapSignOut() {
           delegate?.navigationBarDidTapSignOut()
+        print("nuhgyvftc")
       }
 
 }

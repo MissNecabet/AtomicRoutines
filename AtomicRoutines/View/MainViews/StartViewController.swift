@@ -11,15 +11,10 @@ final class StartViewController: UIViewController {
 
   
     private let mainImageView = UIImageView()
-   
     private let titleLabel = UILabel()
-
     private let secondLabel = UILabel()
-
     private let registerButton = CustomButton()
-
     private let loginButton = CustomButton()
-
     private let buttonStack = UIStackView()
     
 

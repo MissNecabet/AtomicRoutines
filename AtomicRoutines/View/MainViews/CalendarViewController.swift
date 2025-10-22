@@ -5,17 +5,20 @@
 //  Created by Najabat Sofiyeva on 15.10.25.
 //
 import UIKit
+import FirebaseAuth
 
 
 class CalendarViewController: UIViewController {
-    var selectedDate: Date?
-    let calendarView = CalendarView()
-    var bottomView: UIView?
-    let scheduleView = ScheduleView()
-    let noScheduleView = NoScheduleView()
+    private let customNav = NavigationBarView()
+    private var selectedDate: Date?
+    private let calendarView = CalendarView()
+    private var bottomView: UIView?
+    private let scheduleView = ScheduleView()
+    private let noScheduleView = NoScheduleView()
     override func viewDidLoad() {
             super.viewDidLoad()
         view.backgroundColor = UIColor(named: "lightblue")
+        customNav.delegate = self
             setupConstraints()
         //calendarviewcontroller achilanda no schedule view gorunur. scheduleDateden alinan gune esasen bottomview teyin edilir. ve eger
         self.showBottomView(NoScheduleView())
@@ -68,4 +71,23 @@ class CalendarViewController: UIViewController {
     }
 
 
+}
+
+extension CalendarViewController:NavigationBarViewDelegate{
+    func navigationBarDidTapSignOut() {
+           do {
+               try Auth.auth().signOut()
+               print("Sign out success")
+               let startVC = StartViewController()
+               let navController = UINavigationController(rootViewController: startVC)
+               if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                  let sceneDelegate = windowScene.delegate as? SceneDelegate,
+                  let window = sceneDelegate.window {
+                   window.rootViewController = navController
+                   window.makeKeyAndVisible()
+               }
+           } catch let error {
+               print("Error signing out: \(error.localizedDescription)")
+           }
+       }
 }

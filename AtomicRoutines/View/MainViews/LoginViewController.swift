@@ -6,10 +6,8 @@
 //
 
 import UIKit
-import UIKit
 import FirebaseAuth
-//import FirebaseAuth
-//import Firebase
+
 
 class LoginViewController: UIViewController {
     
@@ -185,4 +183,4 @@ class LoginViewController: UIViewController {
         
     }
         
-    }
+}
