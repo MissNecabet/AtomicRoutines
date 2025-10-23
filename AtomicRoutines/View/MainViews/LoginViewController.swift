@@ -170,7 +170,16 @@ class LoginViewController: UIViewController {
                 return
             }else{
                 let homeVC = HomeViewController()
-                navigationController?.pushViewController(homeVC, animated: true)
+                      let navController = UINavigationController(rootViewController: homeVC)
+                      navController.modalPresentationStyle = .fullScreen
+
+                     
+                      if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                         let sceneDelegate = windowScene.delegate as? UIWindowSceneDelegate,
+                         let window = sceneDelegate.window {
+                          window?.rootViewController = navController
+                          window?.makeKeyAndVisible()
+                      }
            
                 print("sign in uqurla basa catdi")
             }

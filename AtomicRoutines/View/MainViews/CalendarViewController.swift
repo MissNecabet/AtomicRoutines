@@ -72,7 +72,7 @@ class CalendarViewController: UIViewController {
 
 
 }
-
+//NavigationBarView file da protokol yaradilib
 extension CalendarViewController:NavigationBarViewDelegate{
     func navigationBarDidTapSignOut() {
            do {

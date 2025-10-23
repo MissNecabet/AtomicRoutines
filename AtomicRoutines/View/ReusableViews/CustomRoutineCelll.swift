@@ -14,7 +14,7 @@ class CustomCell: UITableViewCell {
  
        private  let checkCell = UIImageView()
        private let titleLabel = UILabel()
-       private  var isMarked = false
+       var isMarked = false
        var toggleAction: (() -> Void)?
        private var isReadOnly = false
   

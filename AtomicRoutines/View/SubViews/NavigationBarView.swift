@@ -12,6 +12,7 @@ protocol NavigationBarViewDelegate: AnyObject {
     func navigationBarDidTapSignOut()
 }
 
+// bu protokolu CalendarViewControllerde istfade elemisem. cunki NavigationBarView UIView dur. yeni root deyismelidi bu da uiviewcontroller de olur deyesen. men de iki dene uiviewcontroller var idi onlardan birinde istifade eledim, yeni CalendarViewController de deelgate'i teyin etdim.  sign out basanda islemir onsuz. niye bilmirem. fb documentasiadan  copy elemisdim sign out kodunu. niye sign out elemir bilmirem.
 
 class NavigationBarView: UIView {
     private let checkListImage = UIImageView()
